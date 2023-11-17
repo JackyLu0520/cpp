@@ -12,4 +12,4 @@ int main(){
         dp[i]=min(dp[i-1]+a[1]+a[i],dp[i-2]+a[1]+a[i]+2*a[2]);
     printf("%d",dp[n]);
     return 0;
-}
+}//AC
