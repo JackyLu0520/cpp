@@ -24,4 +24,4 @@ int main(){
         q.push(make_pair(val(t.second),t.second));
     }
     return 0;
-}
+} 
