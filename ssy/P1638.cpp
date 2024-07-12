@@ -4,8 +4,6 @@ const int N=1e6+10,M=2e3+10;
 int n,m,a[N],ans,lans,rans;
 int cnt[M]={1},c=1;
 int main(){
-    freopen("data.in","r",stdin);
-    freopen("sol.out","w",stdout);
     scanf("%d%d",&n,&m);ans=n+1;
     for(int i=1;i<=n;i++)
         scanf("%d",&a[i]);
