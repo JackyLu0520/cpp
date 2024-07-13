@@ -28,8 +28,6 @@ inline void update(int k) {
     swap(c[k],c[k+1]);
 }
 int main() {
-    freopen("data.in","r",stdin);
-    freopen("sol.out","w",stdout);
 	n = inn() ,q = inn();
     //scanf("%d%d",&n,&q);
     for(int i = 1; i <= n; i++) c[i] = inn();
