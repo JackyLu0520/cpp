@@ -5,15 +5,13 @@ double ax,ay,bx,by,cx,cy,dx,dy;
 double p,q,r;
 double f(double x1,double x2){
     double ex=bx*x1+ax*(1-x1),ey=by*x1+ay*(1-x1);
-    double fx=dx*x2+cx*(1-x2),fy=dx*x2+cx*(1-x2);
+    double fx=dx*x2+cx*(1-x2),fy=dy*x2+cy*(1-x2);
     double tae=sqrt((ex-ax)*(ex-ax)+(ey-ay)*(ey-ay))/p;
     double tdf=sqrt((fx-dx)*(fx-dx)+(fy-dy)*(fy-dy))/q;
     double tef=sqrt((fx-ex)*(fx-ex)+(fy-ey)*(fy-ey))/r;
     return tae+tdf+tef;
 }
 int main(){
-    freopen("data.in","r",stdin);
-    freopen("sol.out","w",stdout);
     scanf("%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf",&ax,&ay,&bx,&by,&cx,&cy,&dx,&dy,&p,&q,&r);
     double lab=0,rab=1,lres,rres;
     while(fabs(rab-lab)>eps){
@@ -41,6 +39,6 @@ int main(){
         else
             rab=rabmid;
     }
-    printf("%.2lf %.2lf %.2lf",lab,lres,f(lab,lres));
+    printf("%.2lf",f(lab,lres));
     return 0;
 }

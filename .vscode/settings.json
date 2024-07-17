@@ -57,6 +57,8 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "files.associations": {
     "deque": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "cmath": "cpp",
+    "complex": "cpp"
   }
 }
