@@ -24,6 +24,15 @@ bool check(int x){
                 tmp[num(i,j,k)]=tmp[num(i-1,j,k)]+tmp[num(i,j-1,k)]+tmp[num(i,j,k-1)]-
                                 tmp[num(i-1,j-1,k)]-tmp[num(i,j-1,k-1)]-tmp[num(i-1,j,k-1)]+
                                 tmp[num(i-1,j-1,k-1)]+diff[num(i,j,k)];
+    /*for(int i=1;i<=a;i++)
+        for(int j=1;j<=b;j++)
+            for(int k=1;k<=c;k++)
+                printf("%lld ",tmp[num(i,j,k)]);
+    for(int i=1;i<=a;i++)
+        for(int j=1;j<=b;j++)
+            for(int k=1;k<=c;k++)
+                printf("%lld ",diff[num(i,j,k)]);
+    printf("\n");*/
     for(int i=1;i<=a;i++)
         for(int j=1;j<=b;j++)
             for(int k=1;k<=c;k++)
