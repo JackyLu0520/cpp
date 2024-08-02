@@ -39,6 +39,7 @@ struct Treap{
     }
     void build(){
         minfp=root=newnode(-INF);infp=m[root].r=newnode(INF);
+        update(root);
     }
     void zig(ptr &p){
         ptr t=m[p].l;
@@ -54,7 +55,6 @@ struct Treap{
     }
     void insert(int x,ptr &p){
         if(p==0){p=newnode(x);return;}
-        m[p].size++;
         if(m[p].val==x){m[p].cnt++;update(p);return;}
         if(x<m[p].val){
             insert(x,m[p].l);
@@ -78,7 +78,9 @@ struct Treap{
                     zig(p),remove(x,m[p].r);
                 else
                     zag(p),remove(x,m[p].l);
+                update(p);
             }else   m.del(p);
+            return;
         }
         if(x<m[p].val)  remove(x,m[p].l);
         else            remove(x,m[p].r);
@@ -101,7 +103,7 @@ struct Treap{
         int ans=minfp;
         while(p){
             if(x==m[p].val){
-                if(m[p].l>0){
+                if(m[p].l){
                     p=m[p].l;
                     while(m[p].r)   p=m[p].r;
                     ans=p;
@@ -121,7 +123,7 @@ struct Treap{
             if(x==m[p].val){
                 if(m[p].r){
                     p=m[p].r;
-                    while(m[p].l)   p=m[p].r;
+                    while(m[p].l)   p=m[p].l;
                     ans=p;
                 }
                 break;
@@ -140,8 +142,6 @@ struct Treap{
     }
 }t;
 int main(){
-    freopen("data.in","r",stdin);
-    freopen("sol.out","w",stdout);
     t.build();
     int n;
     scanf("%d",&n);
