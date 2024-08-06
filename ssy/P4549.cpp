@@ -12,5 +12,6 @@ int main(){
         scanf("%d",&t);
         ans=gcd(ans,abs(t));
     }
+    printf("%d",ans);
     return 0;
 }
