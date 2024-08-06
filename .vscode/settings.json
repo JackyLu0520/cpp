@@ -59,6 +59,7 @@
     "deque": "cpp",
     "vector": "cpp",
     "cmath": "cpp",
-    "complex": "cpp"
+    "complex": "cpp",
+    "numeric": "cpp"
   }
 }
