@@ -11,7 +11,8 @@ int main(){
         scanf("%d",&a[i][0]);
     for(int j=1;j<L;j++)
         for(int i=1;i<=n;i++)
-            a[i][j]=gcd(a[i][j-1],a[i+(1<<(j-1))][j-1]);
+            if(i+(1<<(j-1))<=n)
+                a[i][j]=gcd(a[i][j-1],a[i+(1<<(j-1))][j-1]);
     lg[1]=0;
     for(int i=2;i<=n;i++)
         lg[i]=lg[i>>1]+1;
