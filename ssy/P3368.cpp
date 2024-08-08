@@ -20,16 +20,18 @@ int getsum(int x){
 }
 int main(){
     scanf("%d%d",&n,&m);
+    int pre=0;
     for(int i=1;i<=n;i++){
         int a;
         scanf("%d",&a);
-        add(i,a);
+        add(i,a-pre);
+        pre=a;
     }
     while(m--){
-        int op,x,y;
-        scanf("%d%d%d",&op,&x,&y);
-        if(op==1)   add(x,y);
-        else        printf("%d\n",getsum(y)-getsum(x-1));
+        int op;
+        scanf("%d",&op);
+        if(op==1){int x,y,k;scanf("%d%d%d",&x,&y,&k);add(x,k);add(y+1,-k);}
+        else{int x;scanf("%d",&x);printf("%d\n",getsum(x));}
     }
     return 0;
 }
