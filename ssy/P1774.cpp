@@ -26,10 +26,10 @@ int main(){
         scanf("%d",&t);
         a[i]=make_pair(t,i);
     }
-    sort(a+1,a+n+1,[](pair<int,int> a,pair<int,int> b){return a.first==b.first?a.second<b.second:a.first<b.first;});
+    sort(a+1,a+n+1,[](pair<int,int> a,pair<int,int> b){return a.first==b.first?a.second>b.second:a.first>b.first;});
     for(int i=1;i<=n;i++)   b[a[i].second]=i;
     int ans=0;
-    for(int i=n;i>=1;i--){
+    for(int i=1;i<=n;i++){
         int x=b[i];
         ans+=getsum(x-1);
         add(x,1);
