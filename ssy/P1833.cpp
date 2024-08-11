@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int N=10010,T=110;
+const int N=100010,T=1010;
 int n,wmax;
 int v[N],w[N],p=0;
 int f[T];
@@ -32,14 +32,16 @@ int main(){
         }
     }
     for(int i=1;i<=p;i++)
-        if(b[i]==0)
+        if(b[i]==0){
             for(int j=wmax;j>=1;j--)
                 if(j-w[i]>=0)
                     f[j]=max(f[j],f[j-w[i]]+v[i]);
-        else
+        }
+        else{
             for(int j=1;j<=wmax;j++)
                 if(j-w[i]>=0)
                     f[j]=max(f[j],f[j-w[i]]+v[i]);
-    printf("%d %d",wmax,f[wmax]);
+        }
+    printf("%d",f[wmax]);
     return 0;
 }
