@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#define int long long
 using namespace std;
 const int N=5e5+10;
 int n;
@@ -19,21 +20,21 @@ int getsum(int x){
     }
     return ans;
 }
-int main(){
-    scanf("%d",&n);
+signed main(){
+    scanf("%lld",&n);
     for(int i=1;i<=n;i++){
         int t;
-        scanf("%d",&t);
+        scanf("%lld",&t);
         a[i]=make_pair(t,i);
     }
-    sort(a+1,a+n+1,[](pair<int,int> a,pair<int,int> b){return a.first==b.first?a.second>b.second:a.first>b.first;});
+    sort(a+1,a+n+1);
     for(int i=1;i<=n;i++)   b[a[i].second]=i;
     int ans=0;
-    for(int i=1;i<=n;i++){
+    for(int i=n;i>=1;i--){
         int x=b[i];
         ans+=getsum(x-1);
         add(x,1);
     }
-    printf("%d",ans);
+    printf("%lld",ans);
     return 0;
 }
