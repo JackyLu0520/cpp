@@ -33,16 +33,12 @@ signed main(){
     scanf("%lld%lld",&n,&k);
     for(int i=1;i<=n;i++)
         scanf("%lld%lld",&a[i].first,&a[i].second);
-    sort()
+    sort(a+1,a+n+1,[](pair<int,int> a,pair<int,int> b){return a.first==b.first?a.second>b.second:a.first<b.first;});
     int l=-INF,r=INF;
     while(l<r){
         int mid=(l+r+1)/2;
-        printf("%lld %lld %lld | ",l,r,mid);
         if(check(mid))  l=mid;
         else            r=mid-1;
-        for(int i=1;i<=n;i++)
-            printf("%lld ",t[i]);
-        printf("| %lld\n",cnt);
     }
     printf("%lld",l);
     return 0;
