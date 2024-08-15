@@ -1,26 +1,40 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-vector<int> a;
-int n;
-int main(){
+int n, m;
+int a[10009];
+int ans = INT_MIN;
+void dfs(int x, int u, int a[10009])
+{
+    int b[10009];
+    if (x == 0)
+    {
+        ans = max(ans, a[1]);
+        return;
+    }
+    if (u != 0)
+    {
+        for (int i = 1; i <= x; i++)
+        {
+            b[i] = max(a[i], a[i + 1]);
+        }
+        dfs(x - 1, u - 1, b);
+    }
+    for (int i = 1; i <= x; i++)
+    {
+        b[i] = min(a[i], a[i + 1]);
+    }
+    dfs(x - 1, u, b);
+}
+int main()
+{
     freopen("data.in","r",stdin);
     freopen("bf.out","w",stdout);
-    scanf("%d",&n);
-    while(n--){
-        int opt,x;
-        scanf("%d%d",&opt,&x);
-        switch(opt){
-            case 1:a.insert(lower_bound(a.begin(),a.end(),x),x);break;
-            case 2:a.erase(lower_bound(a.begin(),a.end(),x));break;
-            case 3:printf("%d\n",(lower_bound(a.begin(),a.end(),x)-a.begin()+1));break;
-            case 4:printf("%d\n",a[x-1]);break;
-            case 5:printf("%d\n",*(lower_bound(a.begin(),a.end(),x)-1));break;
-            case 6:printf("%d\n",*upper_bound(a.begin(),a.end(),x));break;
-            default:break;
-        }
-        /*printf("\na:");
-        for(auto i:a)   printf("%d ",i);
-        printf("\n");*/
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
     }
+    dfs(n - 1, m, a);
+    cout << ans << endl;
     return 0;
 }
