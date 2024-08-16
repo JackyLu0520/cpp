@@ -23,7 +23,7 @@ int lca(int u,int v){
         t>>=1;
     }
     if(u==v)    return u;
-    for(int i=L-1;i>0;i--)
+    for(int i=L-1;i>=0;i--)
         if(fa[u][i]!=fa[v][i]){
             u=fa[u][i];
             v=fa[v][i];
