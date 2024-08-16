@@ -28,8 +28,6 @@ struct R{
 }r[K];int tot=0;
 int ans=0;
 signed main(){
-    freopen("data.in","r",stdin);
-    freopen("sol.out","w",stdout);
     scanf("%lld%lld%lld",&n,&m,&k);
     for(int i=1;i<=n;i++)
         scanf("%lld",&g[i]);
