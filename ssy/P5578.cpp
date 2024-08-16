@@ -21,9 +21,9 @@ int lca(int u,int v){
     return fa[u][0];
 }
 struct R{
-    int x,y,pri;
+    int x,y,pri,id;
     bool operator < (const R& a) const{
-        return pri>a.pri;
+        return pri==a.pri?id<a.id:pri>a.pri;
     }
 }r[K];int tot=0;
 int ans=0;
@@ -53,6 +53,7 @@ signed main(){
         tot++;
         r[tot].x=x;r[tot].y=y;
         r[tot].pri=depth[t];
+        r[tot].id=tot;
     }
     sort(r+1,r+tot+1);
     for(int i=1;i<=tot;i++){
