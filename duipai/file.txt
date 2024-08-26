@@ -6,3 +6,6 @@ bf.cpp:
 sol.cpp:
     freopen("data.in","r",stdin);
     freopen("sol.out","w",stdout);
+spj.cpp:
+    FILE *bf=fopen("bf.out","r");
+    FILE *sol=fopen("sol.out","r");
