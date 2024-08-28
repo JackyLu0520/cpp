@@ -40,8 +40,8 @@ int main(){
     scanf("%lld",&m2);
     for(int i=1;i<=m2;i++)
         scanf("%lld",&a2[i]);
-    sort(a1+1,a1+m1+1,sizeof(a1));
-    sort(a2+1,a2+m2+1,sizeof(a2));
+    sort(a1+1,a1+m1+1);m1=unique(a1+1,a1+m1+1)-a1-1;
+    sort(a2+1,a2+m2+1);m2=unique(a2+1,a2+m2+1)-a2-1;
     while(p<=m1&&q<=m2)
         if(a1[p]==a2[q]){
             a[++m]=a1[p];p++;q++;
@@ -49,8 +49,17 @@ int main(){
             q++;
         else
             p++;
-    int size=a[m];
+    long long size=a[m];
     matrix dp1(1,size),dp2(size,size);
-    dp1[size-1]=0;
+    dp1[0][size-1]=1;
     for(int i=1;i<size;i++)
+        for(int j=1;j<=m;j++)
+            if(i>=a[j])
+                dp1[0][size-i-1]=(dp1[0][size-i-1]+dp1[0][size-i+a[j]-1])%MOD;
+    for(int i=1;i<=m;i++)
+        dp2[a[i]-1][0]=1;
+    for(int i=1;i<size;i++)
+        dp2[i-1][i]=1;
+    printf("%lld",(dp1*binpow(dp2,n-size+1))[0][0]);
+    return 0;
 }
