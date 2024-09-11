@@ -1,7 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int MAXN=1e5+10,MAXM=5e5+10;
+const int MAXN=1e4+10,MAXM=5e4+10;
 int n,m,q;
+bool vis[MAXN][MAXN];
 
 int head[MAXN],nxt[MAXM],ver[MAXM],tot=1;
 void add(int u,int v){
@@ -18,7 +19,7 @@ void tarjan(int u,int in_edge){
             low[u]=min(low[u],low[v]);
             if(low[v]>dfn[u])
                 bridge[i]=bridge[i^1]=1;
-        }else if(i!=in_edge^1)
+        }else if(i!=(in_edge^1))
             low[u]=min(low[u],dfn[v]);
     }
 }
@@ -28,7 +29,7 @@ void dfs(int u){
     c[u]=dccid;
     for(int i=head[u];i;i=nxt[i]){
         int v=ver[i];
-        if(c[u]||bridge[i]) continue;
+        if(c[v]||bridge[i]) continue;
         dfs(v);
     }
 }
@@ -77,13 +78,17 @@ int main(){
     for(int i=1;i<=m;i++){
         int u,v;
         scanf("%d%d",&u,&v);
-        add(u,v);
-        add(v,u);
+        if(!vis[u][v]&&!vis[v][u]){
+            add(u,v);
+            add(v,u);
+            vis[u][v]=1;
+            vis[v][u]=1;
+        }
     }
 
     for(int i=1;i<=n;i++)
         if(!dfn[i])
-            tarjan(i,1);
+            tarjan(i,0);
     
     for(int i=1;i<=n;i++)
         if(!c[i]){
