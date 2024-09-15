@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+typedef __int128 lll;
 const int N=1e5+10,D=6;
 int n;
 int head[N],nxt[D*N],ver[D*N],tot=1;
@@ -8,29 +9,38 @@ void add(int u,int v){
 }
 int ind[N],outd[N];
 queue<int>q;
-int gcd(int a,int b){
+lll gcd(lll a,lll b){
     return b?gcd(b,a%b):a;
 }
-int lcm(int a,int b){
+lll lcm(lll a,lll b){
     return a/gcd(a,b)*b;
 }
+void printlll(lll x){
+    if(x){
+        printlll(x/10);
+        putchar(char(x%10+'0'));
+    }
+}
 struct frac{//a/b
-    int a,b;
-    frac(){}
-    frac(int x){a=x;b=1;}
+    lll a,b;
+    frac(lll x=0,lll y=1){a=x,b=y;}
     frac friend operator+(frac x,frac y){
         frac z;
         z.b=lcm(x.b,y.b);
         z.a=z.b/x.b*x.a+z.b/y.b*y.a;
-        int t=gcd(z.a,z.b);
+        lll t=gcd(z.a,z.b);
         z.a/=t;z.b/=t;
         return z;
     }
-    frac friend operator/(frac x,int y){
+    frac friend operator/(frac x,lll y){
         x.b*=y;
         int t=gcd(x.a,x.b);
         x.a/=t;x.b/=t;
         return x;
+    }
+    void print(){
+        printlll(a);putchar(' ');
+        printlll(b);putchar('\n');
     }
 }a[N];
 int main(){
@@ -59,6 +69,6 @@ int main(){
     }
     for(int i=1;i<=n;i++)
         if(!outd[i])
-            printf("%d %d\n",a[i].a,a[i].b);
+            a[i].print();
     return 0;
 }
