@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 #define int long long
 using namespace std;
-constexpr int N=1e5+10,M=5e6+10;
+constexpr int N=1e5+10,M=2e6+10;
 int n,m,x;
 int head[N],nxt[M],ver[M],tot=1;
 void add(int u,int v){
@@ -39,7 +39,7 @@ void addc(int u,int v){
     vc[++tc]=v;nc[tc]=hc[u];hc[u]=tc;
 }
 queue<int>q;
-int ind[N],outd[N],maxw[N],cnt[N];
+int ind[N],maxw[N],cnt[N];
 void toposort(){
     for(int i=1;i<=sccid;i++)
         if(!ind[i]){
@@ -52,13 +52,18 @@ void toposort(){
         for(int i=hc[u];i;i=nc[i]){
             int v=vc[i];
             ind[v]--;
-            maxw[v]=max(maxw[v],maxw[u]+w[v]);
-            cnt[v]=(cnt[v]+cnt[u])%x;
+            if(maxw[v]==maxw[u]+w[v])
+                cnt[v]=(cnt[v]+cnt[u])%x;
+            else if(maxw[v]<maxw[u]+w[v]){
+                maxw[v]=maxw[u]+w[v];
+                cnt[v]=cnt[u];
+            }
             if(!ind[v]) q.push(v);
         }
     }
 }
 int ans1,ans2;
+set<pair<int,int>>st;
 signed main(){
     scanf("%lld%lld%lld",&n,&m,&x);
     for(int i=1;i<=m;i++){
@@ -69,23 +74,21 @@ signed main(){
         if(!dfn[i])
             tarjan(i);
     for(int u=1;u<=n;u++){
-        bool vis[N]={0};
         for(int i=head[u];i;i=nxt[i]){
             int v=ver[i];
-            if(c[u]!=c[v]&&!vis[c[v]]){
+            if(c[u]!=c[v]&&!st.count(make_pair(c[u],c[v]))){
                 addc(c[u],c[v]);
                 ind[c[v]]++;
-                outd[c[u]]++;
-                vis[c[v]]=1;
+                st.emplace(c[u],c[v]);
             }
         }
     }
     toposort();
     for(int i=1;i<=sccid;i++)
-        if(!outd[i]){
-            ans1=max(ans1,maxw[i]);
+        ans1=max(ans1,maxw[i]);
+    for(int i=1;i<=sccid;i++)
+        if(maxw[i]==ans1)
             ans2=(ans2+cnt[i])%x;
-        }
     printf("%lld\n%lld",ans1,ans2);
     return 0;
 }
