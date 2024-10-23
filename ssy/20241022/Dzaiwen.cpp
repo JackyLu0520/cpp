@@ -1,46 +1,70 @@
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-long long countBadSubstrings(const string& s) {
-    int n = s.length();
-    vector<int> count(26, 0);
-    long long result = 0;
-    int left = 0, uniqueCount = 0;
+const int N = 5e6 + 10;
+const int ALPHA = 26;
 
-    for (int right = 0; right < n; ++right) {
-        if (count[s[right] - 'a'] == 0) {
-            uniqueCount++;
-        }
-        count[s[right] - 'a']++;
-
-        while (uniqueCount > 1) {
-            count[s[left] - 'a']--;
-            if (count[s[left] - 'a'] == 0) {
-                uniqueCount--;
-            }
-            left++;
-        }
-
-        if (uniqueCount == 1) {
-            result += right - left + 1;
-        }
-    }
-
-    return result;
-}
+string s;
+long long ans;
+vector<int> positions[ALPHA];
+int head[ALPHA];
 
 int main() {
-    ios_base::sync_with_stdio(false);
+    ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    string s;
+    
     cin >> s;
-
-    long long badSubstrings = countBadSubstrings(s);
-    cout << badSubstrings << endl;
-
+    int n = s.length();
+    
+    // 预处理每个字符的位置
+    for (int i = 0; i < n; i++) {
+        positions[s[i] - 'a'].push_back(i);
+    }
+    
+    // 添加哨兵
+    for (int i = 0; i < ALPHA; i++) {
+        positions[i].push_back(n);
+        positions[i].push_back(n);
+    }
+    
+    vector<int> times;
+    times.reserve(ALPHA * 2);
+    vector<int> diff(ALPHA * 2);
+    
+    // 枚举左端点
+    for (int left = 0; left < n; left++) {
+        times.clear();
+        
+        // 更新每个字符的head指针
+        for (int j = 0; j < ALPHA; j++) {
+            while (positions[j][head[j]] < left) head[j]++;
+            times.push_back(positions[j][head[j]]);
+            times.push_back(positions[j][head[j] + 1]);
+        }
+        
+        // 离散化
+        sort(times.begin(), times.end());
+        times.erase(unique(times.begin(), times.end()), times.end());
+        
+        fill(diff.begin(), diff.begin() + times.size(), 0);
+        
+        // 差分处理
+        for (int j = 0; j < ALPHA; j++) {
+            int start = lower_bound(times.begin(), times.end(), positions[j][head[j]]) - times.begin();
+            int end = lower_bound(times.begin(), times.end(), positions[j][head[j] + 1]) - times.begin();
+            diff[start]++;
+            diff[end]--;
+        }
+        
+        // 前缀和计算结果
+        for (int j = 1; j < times.size(); j++) {
+            diff[j] += diff[j - 1];
+            if (diff[j - 1]) {
+                ans += times[j] - times[j - 1];
+            }
+        }
+    }
+    
+    cout << ans << '\n';
     return 0;
 }
