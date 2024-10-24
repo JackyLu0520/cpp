@@ -59,6 +59,7 @@
   "files.associations": {
     "cmath": "cpp",
     "iostream": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "random": "cpp"
   }
 }
