@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-constexpr int N=1e6+10;
 long long n,x;
 long long C2(long long n){
     if(n<=0)    return 0;
