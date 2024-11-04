@@ -13,6 +13,9 @@ struct seg{
         return l<a.l;
     }
 }s[N];
+inline long long sqv(int i,int j){//the ith car, the jth test
+    return v[i]*v[i]+2*a[i]*(p[j]-d[i]);
+}
 int main(){
     int _;
     scanf("%d",&_);
@@ -34,11 +37,12 @@ int main(){
             }
             double x=(maxv*maxv-v[i]*v[i])*1.0/(2*a[i]);
             if(a[i]>0){
-                if(v[i]*v[i]+2*a[i]*(p[m]-d[i])<=maxv*maxv)  continue;
-                s[++cnt1]=seg(upper_bound(p+t,p+m+1,d[i]+x)-p,m);
+                if(sqv(i,m)<=maxv*maxv)  continue;
+                //s[++cnt1]=seg(upper_bound(p+t,p+m+1,d[i]+x)-p,m);
+                int l=,r=;
             }else if(a[i]<0){
-                if(v[i]*v[i]+2*a[i]*(p[t]-d[i])<=maxv*maxv)    continue;
-                s[++cnt1]=seg(t,lower_bound(p+t,p+m+1,d[i]+x)-p-1);
+                if(sqv(i,t)<=maxv*maxv)    continue;
+                //s[++cnt1]=seg(t,lower_bound(p+t,p+m+1,d[i]+x)-p-1);
             }
             //printf("#%d:[%d,%d]\n",i,s[cnt1].l,s[cnt1].r);
         }
