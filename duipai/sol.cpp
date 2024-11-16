@@ -1,29 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
-constexpr int K=2e5+10;
-int n,k;
-vector<int>p[K];
-vector<int>pos,res;
+const int N=1.5e5+10;
+long long n,a[N],b[N],s[N],sum=0,q;
 int main(){
     freopen("data.in","r",stdin);
     freopen("sol.out","w",stdout);
-    scanf("%d%d",&n,&k);
+    scanf("%lld",&n);
     for(int i=1;i<=n;i++){
-        int x;scanf("%d",&x);
-        p[x].push_back(i);
+        scanf("%lld",&a[i]);
+        b[i]=a[i];
     }
-    res.push_back(0);pos.push_back(0);
-    for(int i=1;i<=k;i++){
-        auto it=upper_bound(pos.begin(),pos.end(),*(p[i].end()-1))-1;
-        auto it1=lower_bound(p[i].begin(),p[i].end(),*it);
-        auto it2=lower_bound(pos.begin(),pos.end(),*it1);
-        res.insert(it2-pos.begin()+res.begin(),i);
-        pos.insert(it2,*it1);
+    sort(b+1,b+n+1);
+    for(int i=1;i<=n;i++){
+        s[i]=s[i-1]+b[i];
+        sum+=i*b[i];
     }
-    /*for(auto it=pos.begin()+1;it!=pos.end();it++)
-        printf("%d ",*it);
-    printf("\n");*/
-    for(auto it=res.begin()+1;it!=res.end();it++)
-        printf("%d ",*it);
+    //debug
+    /*for(int i=1;i<=n;i++)
+        printf("%lld ",b[i]);
+    printf("\n");
+    for(int i=1;i<=n;i++)
+        printf("%lld ",s[i]);
+    printf("\n");
+    printf("%lld\n",sum);*/
+    //
+    scanf("%lld",&q);
+    while(q--){
+        long long x,y;scanf("%lld%lld",&x,&y);
+        long long q=lower_bound(b+1,b+n+1,a[x])-b;
+        b[q]=b[q-1];
+        long long p=upper_bound(b+1,b+n+1,y)-b-1;
+        b[q]=a[x];
+        //debug
+        //printf("%lld %lld ",p,q);
+        //
+        if(p>q)
+            printf("%lld\n",sum-(s[p]-s[q])+y*p-q*a[x]);
+        else if(p==q)
+            printf("%lld\n",sum-q*a[x]+p*y);
+        else
+            printf("%lld\n",sum+(s[q-1]-s[p])+y*(p+1)-q*a[x]);
+    }
     return 0;
 }
