@@ -7,7 +7,7 @@ struct node{
     long long tag;
     long long max;
 }t[16*M];
-void pushup(int p){
+inline void pushup(int p){
     t[p].max=max(t[2*p].max,t[2*p+1].max);
 }
 void build(int p,int l,int r){
@@ -18,7 +18,7 @@ void build(int p,int l,int r){
     build(2*p+1,mid+1,r);
     pushup(p);
 }
-void pushdown(int p){
+inline void pushdown(int p){
     if(t[p].tag){
         t[2*p].tag+=t[p].tag;
         t[2*p+1].tag+=t[p].tag;
@@ -58,6 +58,7 @@ vector<pair<long long,long long>>yx[2*M];//x->{y,v}
 inline int get(long long x){//get position of x from tmp
     return lower_bound(tmp.begin(),tmp.end(),x)-tmp.begin()+1;
 }
+#ifdef DEBUG
 void print(int p,int depth,bool lr){
     for(int i=1;i<=depth;i++)
         printf(" ");
@@ -66,10 +67,23 @@ void print(int p,int depth,bool lr){
     print(2*p,depth+1,1);
     print(2*p+1,depth+1,0);
 }
-void init(){
-    scanf("%lld%lld%lld%lld",&n,&m,&k,&d);
+#endif
+inline long long read(){
+    long long num=0;
+    char c;
+    do{c=getchar();}while(!isdigit(c));
+    do{
+        num=(num<<3)+(num<<1)+(c^48);
+        c=getchar();
+    }while(isdigit(c));
+    return num;
+}
+inline void init(){
+    //scanf("%lld%lld%lld%lld",&n,&m,&k,&d);
+    n=read(),m=read(),k=read(),d=read();
     for(int i=1;i<=m;i++)
-        scanf("%lld%lld%lld",&x[i],&y[i],&v[i]);
+        //scanf("%lld%lld%lld",&x[i],&y[i],&v[i]);
+        x[i]=read(),y[i]=read(),v[i]=read();
     tmp.clear();
     memset(f,0,sizeof(f));
     memset(g,0,sizeof(g));
@@ -90,9 +104,9 @@ void init(){
     print(1,0,0);
 #endif
 }
-void solve(){
+inline void solve(){
     for(int i=1;i<=tmp.size();i++){
-        add(1,0,i-1,-d);
+        add(1,0,i-1,-d*(tmp[i-1]-(i-2>=0?tmp[i-2]:0)));
         for(auto &j:yx[i])
             add(1,0,j.first,j.second);
         add(1,i,i,g[i-1]);
