@@ -1,76 +1,56 @@
 #include<bits/stdc++.h>
-#define DEBUG
 using namespace std;
-const int N=3e5+10,M=3e5+10,L=22;
-int n,m;
-struct node{
-    int ch[2];
-    int l,r;
-}t[(N+M)*(L+1)];int tot=1;
-int xorall=0,root=1;
+const int N=3e5+10,L=25,M=3e5+10;
+int n,m,xorall;
+int trie[(N+M)*(L+1)][2],cnt[(N+M)*(L+1)];
+int root[N+M]={0},tot=0;//0:nil
 inline void pushup(int p){
-    t[p].l=min(t[t[p].ch[0]].l,t[t[p].ch[1]].r);
-    t[p].r=max(t[t[p].ch[0]].r,t[t[p].ch[1]].r);
+    cnt[p]=cnt[trie[p][0]]+cnt[trie[p][1]];
 }
-void insert(int &p,int x,int pos,int id){
-    if(!p){
-        p=++tot;
-        t[p].ch[0]=t[p].ch[1]=0;
-        t[p].l=2147483647;
-        t[p].r=0;
-    }
+//trie[0]={0,0},cnt[0]=0;
+void insert(int &p,int q,int x,int pos){
+    if(!p)  p=++tot;
     if(pos==-1){
-        t[p].ch[0]=t[p].ch[1]=0;
-        t[p].l=min(t[p].l,id);
-        t[p].r=max(t[p].r,id);
+        cnt[p]=cnt[q]+1;
         return;
     }
-    insert(t[p].ch[(x>>pos)&1],x,pos-1,id);
+    int c=(x>>pos)&1;
+    trie[p][c^1]=trie[q][c^1];
+    insert(trie[p][c],trie[q][c],x,pos-1);
     pushup(p);
 }
-int query(int p,int x,int pos,int l,int r,int val){
+int query(int p,int q,int x,int pos,int val){//trie(q)-trie(p)
     if(pos==-1) return val^x;
-    int c=(x>>pos)&1;
-    if(!t[p].ch[c]||t[t[p].ch[c]].l>r||t[t[p].ch[c]].r<l)
-        return query(t[p].ch[c^1],x,pos-1,l,r,val|((c^1)<<pos));
+    int c=(x>>pos)&1;c^=1;
+    if(cnt[trie[q][c]]==cnt[trie[p][c]])
+        return query(trie[p][c^1],trie[q][c^1],x,pos-1,val|((c^1)<<pos));
     else
-        return query(t[p].ch[c],x,pos-1,l,r,val|(c<<pos));
+        return query(trie[p][c],trie[q][c],x,pos-1,val|(c<<pos));
 }
-#ifdef DEBUG
-void print(int p,int lr,int depth){
-    if(!p)  return;
-    for(int i=1;i<=depth;i++)
-        printf(" ");
-    printf("%d:l=%d,r=%d\n",lr,t[p].l,t[p].r);
-    print(t[p].ch[0],0,depth+1);
-    print(t[p].ch[1],1,depth+1);
-}
-#endif
 int main(){
     scanf("%d%d",&n,&m);
-    t[0].ch[0]=t[0].ch[1]=0;
-    t[0].l=2147483647;t[0].r=0;
+    insert(root[0],0,0,L);
     for(int i=1;i<=n;i++){
-        int x;scanf("%d",&x);
+        int x;
+        scanf("%d",&x);
         xorall^=x;
-        insert(root,xorall,L,i);
+        insert(root[i],root[i-1],xorall,L);
     }
     while(m--){
-        char op;
-        scanf(" %c",&op);
-        if(op=='A'){
+        char op[2];
+        scanf("%s",op);
+        if(op[0]=='A'){
             int x;
             scanf("%d",&x);
             xorall^=x;
-            insert(root,xorall,L,++n);
+            n++;
+            insert(root[n],root[n-1],xorall,L);
         }else{
             int l,r,x;
             scanf("%d%d%d",&l,&r,&x);
-            printf("%d\n",query(root,x^xorall,L,l-1,r-1,0));
+            int ans=query(l==1?0:root[l-2],root[r-1],x^xorall,L,0);
+            printf("%d\n",ans);
         }
-#ifdef DEBUG
-        print(root,0,0);
-#endif
     }
     return 0;
 }
