@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#define int long long
 //#define DEBUG
 using namespace std;
 const int M=1e5+10,N=1e5+10,L=22;
@@ -35,7 +36,7 @@ void add(int &p,int q,int i,int k,int pl,int pr){
     pushup(p);
 }
 int query(int p,int k,int ret,int pl,int pr){
-    if(pl==pr)  return ret;
+    if(pl==pr)  return ret+(t[p].cnt==0?0:(t[p].sum/t[p].cnt*k));
     int mid=(pl+pr)/2;
     if(k<=t[t[p].ls].cnt)   return query(t[p].ls,k,ret,pl,mid);
     else                    return query(t[p].rs,k-t[t[p].ls].cnt,ret+t[t[p].ls].sum,mid+1,pr);
@@ -48,11 +49,11 @@ int singlequery(int p,int i,int pl,int pr){
     else        return singlequery(t[p].rs,i,mid+1,pr);
 }
 #endif
-int main(){
-    scanf("%d%d",&m,&n);
+signed main(){
+    scanf("%lld%lld",&m,&n);
     for(int i=1;i<=m;i++){
         int s,e,p;
-        scanf("%d%d%d",&s,&e,&p);
+        scanf("%lld%lld%lld",&s,&e,&p);
         op[s].emplace_back(p,1);
         op[e+1].emplace_back(p,-1);
         tmp.emplace_back(p);
@@ -76,9 +77,9 @@ int main(){
     }
 #ifdef DEBUG
     for(int i=1;i<=n;i++){
-        printf("%d:",i);
+        printf("%lld:",i);
         for(int j=0;j<tmp.size();j++){
-            printf("%d ",singlequery(root[i],j+1,1,tmp.size()));
+            printf("%lld ",singlequery(root[i],j+1,1,tmp.size()));
         }
         printf("\n");
     }
@@ -86,10 +87,10 @@ int main(){
     int pre=1;
     for(int i=1;i<=n;i++){
         int x,a,b,c;
-        scanf("%d%d%d%d",&x,&a,&b,&c);
+        scanf("%lld%lld%lld%lld",&x,&a,&b,&c);
         int k=1+(a*pre+b)%c;
         pre=query(root[x],k,0,1,tmp.size());
-        printf("%d\n",pre);
+        printf("%lld\n",pre);
     }
 #endif
     return 0;
