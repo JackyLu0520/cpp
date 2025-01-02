@@ -23,9 +23,9 @@ int main(){
     }
     for(int i=1;;i++){
         cout<<"#"<<i<<endl;
-        system("./gen");
-        system("./bf");
-        system("./sol");
+        system("./gen > data.in");
+        system("./bf < data.in > bf.out");
+        system("./sol < data.in >sol.out");
         if(!spj){
             if(system("diff bf.out sol.out")){
                 cout<<"Continue?(y/n)";
@@ -33,7 +33,7 @@ int main(){
                 if(c=='n') break;
             }
         }else{
-            system("./spj");
+            system("./spj > res.out");
             ifstream fin("res.out");
             string s;getline(fin,s);
             cout<<s<<endl;
