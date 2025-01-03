@@ -39,7 +39,7 @@ namespace LCA{
 using LCA::fa;
 namespace SegTree{
     struct node{
-        int max;
+        int max,pos;
         int ls,rs;
     }t[4*M*L];int tot;
     int root[N];
@@ -50,12 +50,19 @@ namespace SegTree{
         return p;
     }
     inline void pushup(int p){
-        t[p].max=max(t[t[p].ls].max,t[t[p].rs].max);
+        if(t[t[p].ls].max>=t[t[p].rs].max){
+            t[p].max=t[t[p].ls].max;
+            t[p].pos=t[t[p].ls].pos;
+        }else{
+            t[p].max=t[t[p].rs].max;
+            t[p].pos=t[t[p].rs].pos;
+        }
     }
     void add(int &p,int i,int k,int l,int r){
         if(!p)  p=newnode();
         if(l==r){
             t[p].max+=k;
+            t[p].pos=l;
             return;
         }
         int mid=(l+r)/2;
@@ -65,10 +72,11 @@ namespace SegTree{
     }
     void merge(int &p,int q,int l,int r){//p+=q
         if(!p||!q){
-            p=p|q;return;
+            p=(p|q);return;
         }
         if(l==r){
             t[p].max+=t[q].max;
+            t[p].pos=l;
             return;
         }
         int mid=(l+r)/2;
@@ -76,14 +84,9 @@ namespace SegTree{
         merge(t[p].rs,t[q].rs,mid+1,r);
         pushup(p);
     }
-    int query(int p,int l,int r){
-        if(l==r)    return l;
-        int mid=(l+r)/2;
-        if(t[p].max==t[t[p].ls].max)    return query(t[p].ls,l,mid);
-        else                            return query(t[p].rs,mid+1,r);
-    }
 }
 using SegTree::root;
+int ans[N];
 void dfs(int u,int p){
     for(int i=head[u];i;i=nxt[i]){
         int v=ver[i];
@@ -91,6 +94,7 @@ void dfs(int u,int p){
         dfs(v,u);
         SegTree::merge(root[u],root[v],1,K);
     }
+    ans[u]=SegTree::t[root[u]].max==0?0:SegTree::t[root[u]].pos;
 }
 int main(){
     scanf("%d%d",&n,&m);
@@ -107,10 +111,12 @@ int main(){
         SegTree::add(root[u],k,1,1,K);
         SegTree::add(root[v],k,1,1,K);
         SegTree::add(root[lca],k,-1,1,K);
-        SegTree::add(root[fa[lca][0]],k,-1,1,K);
+        if(lca!=1)  SegTree::add(root[fa[lca][0]],k,-1,1,K);
     }
     dfs(1,0);
     for(int i=1;i<=n;i++)
-        printf("%d\n",SegTree::query(root[i],1,K));
+        printf("%d\n",SegTree::t[root[i]].pos);
+    for(int i=1;i<=n;i++)
+        printf("%d\n",ans[i]);
     return 0;
 }
