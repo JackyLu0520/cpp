@@ -45,8 +45,9 @@ namespace SegTree{
     int root[N];
     inline int newnode(){
         int p=++tot;
-        t[p].max=0x3f3f3f3f;
+        t[p].max=0;
         t[p].ls=t[p].rs=0;
+        return p;
     }
     inline void pushup(int p){
         t[p].max=max(t[t[p].ls].max,t[t[p].rs].max);
