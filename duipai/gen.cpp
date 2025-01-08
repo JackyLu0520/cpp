@@ -5,16 +5,25 @@ mt19937 Rand(chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::n
 inline int randint(int l,int r){
     return Rand()%(r-l+1)+l;
 }
+struct dsu{
+    int fa[N];
+    dsu(int n){for(int i=1;i<=n;i++)fa[i]=i;}
+    int query(int x){return fa[x]==x?x:fa[x]=query(fa[x]);}
+    void merge(int x,int y){fa[query(x)]=query(y);}
+};
 int main(){
-    printf("1\n");
     int n=randint(1,N),m=randint(1,M);
     printf("%d %d\n",n,m);
-    for(int i=1;i<=n;i++)
-        printf("%d ",randint(1,A));
-    printf("\n");
-    for(int i=1;i<=m;i++){
-        int l=randint(0,n-1),r=randint(l,n-1),h=randint(1,A);
-        printf("%d %d %d\n",l,r,h);
+    dsu d(n);
+    for(int i=1;i<n;i++){
+        int u,v;
+        do
+            u=randint(1,n),v=randint(1,n);
+        while(d.query(u)==d.query(v));
+        printf("%d %d\n",u,v);
+        d.merge(u,v);
     }
+    for(int i=1;i<=m;i++)
+        printf("%d %d %d\n",randint(1,n),randint(1,n),randint(1,A));
     return 0;
 }

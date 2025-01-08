@@ -23,9 +23,9 @@ int main(){
     }
     for(int i=1;;i++){
         cout<<"#"<<i<<endl;
-        system("gen.exe");
-        system("bf.exe");
-        system("sol.exe");
+        system("gen.exe > data.in");
+        system("bf.exe < data.in > bf.out");
+        system("sol.exe < data.in > sol.out");
         if(!spj){
             if(system("fc.exe bf.out sol.out")){
                 cout<<"Continue?(y/n)";
