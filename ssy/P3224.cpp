@@ -22,12 +22,12 @@ inline void pushup(int p){
 }
 void split(int p,int key,int &L,int &R){
     if(!p){L=R=0;return;}
-    if(t[p].key<key){
+    if(t[p].key>key){
         R=p;
-        split(p,key,L,t[p].ls);
+        split(t[p].ls,key,L,t[p].ls);
     }else{
         L=p;
-        split(p,key,t[p].rs,R);
+        split(t[p].rs,key,t[p].rs,R);
     }
     pushup(p);
 }
@@ -48,11 +48,28 @@ int query(int p,int rank){
         return query(t[p].ls,rank);
     else if(t[t[p].ls].size+1==rank)
         return t[p].val;
-    else
+    else if(t[p].size>=rank)
         return query(t[p].rs,rank-t[t[p].ls].size-1);
+    else
+        return -1;
 }
+#ifdef DEBUG
+void inorder(int p){
+    if(!p)  return;
+    inorder(t[p].ls);
+    printf("%d:%d ",t[p].key,t[p].val);
+    inorder(t[p].rs);
+}
+#endif
+struct dsu{
+    int fa[N];
+    dsu(int n){for(int i=1;i<=n;i++)fa[i]=i;}
+    int query(int x){return fa[x]==x?x:fa[x]=query(fa[x]);}
+    void merge(int x,int y){fa[query(x)]=query(y);}
+};
 int main(){
     scanf("%d%d",&n,&m);
+    dsu d(n);
     for(int i=1;i<=n;i++){
         int p;
         scanf("%d",&p);
@@ -61,17 +78,36 @@ int main(){
     for(int i=1;i<=m;i++){
         int u,v;
         scanf("%d%d",&u,&v);
-        root[u]=root[v]=merge(root[u],root[v]);
+        int uu=d.query(u),vv=d.query(v);
+        d.merge(uu,vv);
+        root[d.query(uu)]=merge(root[uu],root[vv]);
     }
+#ifdef DEBUG
+    for(int i=1;i<=n;i++){
+        printf("%d:",i);
+        inorder(root[d.query(i)]);
+        printf("\n");
+    }
+#endif
     scanf("%d",&q);
     while(q--){
         char op;
         int x,y;
         scanf(" %c%d%d",&op,&x,&y);
         if(op=='Q')
-            printf("%d\n",query(root[x],y));
-        else
-            root[x]=root[y]=merge(root[x],root[y]);
+            printf("%d\n",query(root[d.query(x)],y));
+        else{
+            int xx=d.query(x),yy=d.query(y);
+            d.merge(xx,yy);
+            root[d.query(xx)]=merge(root[xx],root[yy]);
+#ifdef DEBUG
+            for(int i=1;i<=n;i++){
+                printf("%d:",i);
+                inorder(root[d.query(i)]);
+                printf("\n");
+            }
+#endif
+        }
     }
     return 0;
 }
