@@ -54,6 +54,7 @@ void dfs(int u){
     if(ls[u]==0&&rs[u]==0)  return;
     dfs(ls[u]);
     dfs(rs[u]);
+    x=y=0;
     root[u]=merge(root[ls[u]],root[rs[u]],1,n);
     ans+=min(x,y);
 }
