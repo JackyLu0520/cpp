@@ -1,3 +1,3 @@
-2
-forces
-abba
+2 3
+..X
+.X.
