@@ -7,7 +7,7 @@ dp_{1,l,r}=[a_{1,l-1}=a_{1,r}]
 $$
 
 $$
-s_{l,r}=\sum_{i=1}^{l}\sum_{j=1}^{r}dp_{cur,i,j}
+s_{l,r}=\sum_{i=1}^{l}\sum_{j=1}^{r}dp_{cur,i,j}=s_{l-1,r}+s_{l,r-1}-s_{l-1,r-1}+dp_{cur,i,j}
 $$
 
 $$
